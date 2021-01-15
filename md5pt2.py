@@ -17,7 +17,7 @@ def initilization():
     password = "vnotpu"
     pass2 =password.encode()
     salt = "hfT7jp2q"
-
+    salt2 = salt.encode()
     res = password + "$1$" + salt
     res2 = res.encode()
     hash= password+ salt + password
@@ -33,40 +33,34 @@ def initilization():
 
     i = len(password)
 
-    while i > 0:
+    while i != 0:
         if i&1:
             res2 += b'\x00'
         else:
             res2 += password[0].encode()
         i >>= 1
-
+    print(res2)
     finalmd5 = hashlib.md5(res2)
     finalmd52 = finalmd5.digest()
 
     hash = b'\xed\x7a\x53\x07\x58\x8e\x49\xed\x3a\x27\x77\xd9\x26\xd6\x2f\x96'
-
-    for j in range(0,1000):
+    print(pass2)
+    for j in range(0,10):
         tmp = b''
         if (j %2) ==1:
-            tmp += password.encode()
-            finalmd53 = hashlib.md5(tmp).digest()
+            tmp += pass2
         else:
             tmp += finalmd52
-            finalmd53 = hashlib.md5(tmp).digest()
-        if j % 3 != 0:
-            tmp += salt.encode()
-            finalmd53 = hashlib.md5(tmp).digest()
-        if j % 7 != 0:
-            tmp += password.encode()
-            finalmd53 = hashlib.md5(tmp).digest()
+        if (j % 3) != 0:
+            tmp += salt2
+            print(tmp)
+        if (j % 7) != 0:
+            tmp += pass2
         if (j %2) == 1:
             tmp+=finalmd52
-            finalmd53 = hashlib.md5(tmp).digest()
         else:
-            tmp += password.encode()
-            finalmd53 = hashlib.md5(tmp).digest()
-
-
+            tmp += pass2
+    finalmd53 = hashlib.md5(tmp).digest()
 
     finalfinal = to64((finalmd53[0] << 16) | (finalmd53[6] << 8) | (finalmd53[12]), 4) +\
     to64((finalmd53[1] << 16) | (finalmd53[7] << 8) | (finalmd53[13]), 4) +\
