@@ -1,5 +1,7 @@
 import hashlib
-
+import threading
+import time
+start = time.clock()
 # paswword: $1$4fTgjp6q$JgdO/UQGRxKX2ZfmBIjt40
 
 def to64(v,n):
@@ -67,15 +69,36 @@ def initilization(possible_password, verified_salt):
     to64((md5_res[3] << 16) | (md5_res[9] << 8) | (md5_res[15]), 4) +\
     to64((md5_res[4] << 16) | (md5_res[10] << 8) | (md5_res[5]), 4) +\
     to64(md5_res[11], 2))
-
+    #daaaad
     return(final_hex)
 
 def passwords_creator():
-    f = open("testpass.txt","r")
-
+    f = open("finalpass.txt","r")
+    w = 0
     for l in f:
-        if "jrs4ndeUlQJKVYrFKVEOS0" in initilization(l.strip(),"hfT7jp2q"):
+        if "ZvOTwSaj8dfCOM2r9Ydhh1" in initilization(l.strip(),"hfT7jp2q"):
             print(l)
+            w= w+1
+            break
+        
+        w = w+1
     f.close()
 
-passwords_creator()
+def passwords_creator2():
+    f = open("possiblepasswords.txt","r")
+    w = 0
+    for l in f:
+        if "ZvOTwSaj8dfCOM2r9Ydhh1" in initilization(l.strip(),"hfT7jp2q"):
+            print(l)
+            w= w+1
+            break
+        
+        w = w+1
+    f.close()  
+
+firstthread = threading.Thread(target=passwords_creator)
+#secondthread = threading.Thread(target=passwords_creator2)
+start = time.clock()
+end = time.clock()
+print(end-start)
+#secondthread.start()
