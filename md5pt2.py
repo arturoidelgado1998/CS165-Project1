@@ -10,13 +10,13 @@ def to64(v,n):
         v>>=6
     return ret
 
-def initilization():
+def initilization(possible_password, verified_salt):
 
-    password = "vnotpu"
+    password = possible_password
     pass_bytes =bytes(password, 'utf-8')
 
-    salt = "hfT7jp2q"
-    salt_bytes = salt.encode()
+    salt = verified_salt
+    salt_bytes = bytes(salt, 'utf-8')
     
     res = password + "$1$" + salt
     res2 = res.encode()
@@ -68,8 +68,14 @@ def initilization():
     to64((md5_res[4] << 16) | (md5_res[10] << 8) | (md5_res[5]), 4) +\
     to64(md5_res[11], 2))
 
-    print(final_hex)
+    return(final_hex)
 
+def passwords_creator():
+    f = open("testpass.txt","r")
 
-initilization()
+    for l in f:
+        if "jrs4ndeUlQJKVYrFKVEOS0" in initilization(l.strip(),"hfT7jp2q"):
+            print(l)
+    f.close()
 
+passwords_creator()
