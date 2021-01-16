@@ -1,7 +1,7 @@
 import hashlib
-import threading
+import multiprocessing
 import time
-start = time.clock()
+
 # paswword: $1$4fTgjp6q$JgdO/UQGRxKX2ZfmBIjt40
 
 def to64(v,n):
@@ -73,7 +73,7 @@ def initilization(possible_password, verified_salt):
     return(final_hex)
 
 def passwords_creator():
-    f = open("finalpass.txt","r")
+    f = open("testpass.txt","r")
     w = 0
     for l in f:
         if "ZvOTwSaj8dfCOM2r9Ydhh1" in initilization(l.strip(),"hfT7jp2q"):
@@ -94,11 +94,12 @@ def passwords_creator2():
             break
         
         w = w+1
-    f.close()  
+    f.close()
+    
+if __name__ == '__main__':
 
-firstthread = threading.Thread(target=passwords_creator)
-#secondthread = threading.Thread(target=passwords_creator2)
-start = time.clock()
-end = time.clock()
-print(end-start)
-#secondthread.start()
+    firstprocess = multiprocessing.Process(target=passwords_creator)
+    secondprocess = multiprocessing.Process(target=passwords_creator2)
+
+    firstprocess.start()
+    secondprocess.start()
