@@ -5,6 +5,7 @@ import os
 
 # paswword: $1$4fTgjp6q$JgdO/UQGRxKX2ZfmBIjt40
 
+
 def to64(v,n):
     base64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     ret = ""
@@ -13,7 +14,7 @@ def to64(v,n):
         v>>=6
     return ret
 
-def initilization(file, dirname1):
+def initilization(file, dirname1,t0):
         os.chdir("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/"+ dirname1)
         f = open(file)
         count = 1
@@ -76,28 +77,28 @@ def initilization(file, dirname1):
         #daaaad
             if final_hex == 'JgdO/UQGRxKX2ZfmBIjt40':
                 print('{}: MATCH FOUND'.format(password))
-                break
+                print(count)
+                print(time.time()-t0)
             else:
                 count += 1
-                if count % 4826809 == 0:
-                    print(count) 
+ 
 
 #initilization("File A1.txt")   
-def filelinker(dirname):
+def filelinker(dirname,t0):
     for textfile in os.listdir("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/"+ dirname):
-        initilization(textfile, dirname)
-        os.remove("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/" +dirname +"/"+textfile)
+        initilization(textfile, dirname,t0)
+        os.remove("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/" +dirname+"/"+textfile)
 
 if __name__ == '__main__':
     t0 = time.time()
 
 
-    firstprocess = multiprocessing.Process(target= filelinker, args=("process1",))
-    secondprocess = multiprocessing.Process(target=filelinker, args=("process2",))
-    thirdprocess = multiprocessing.Process(target= filelinker, args=("process3",))
-    fourthprocess = multiprocessing.Process(target= filelinker, args=("process4",))
-    fifthprocess = multiprocessing.Process(target= filelinker, args=("process5",))
-    sixthprocess = multiprocessing.Process(target= filelinker, args=("process6",))
+    firstprocess = multiprocessing.Process(target= filelinker, args=("process1",t0,))
+    secondprocess = multiprocessing.Process(target=filelinker, args=("process2",t0,))
+    thirdprocess = multiprocessing.Process(target= filelinker, args=("process3",t0,))
+    fourthprocess = multiprocessing.Process(target= filelinker, args=("process4",t0,))
+    fifthprocess = multiprocessing.Process(target= filelinker, args=("process5",t0,))
+    sixthprocess = multiprocessing.Process(target= filelinker, args=("process6",t0,))
 
     firstprocess.start()
     secondprocess.start()
