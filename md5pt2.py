@@ -1,8 +1,10 @@
 import hashlib
 import multiprocessing
 import time
+import os
 
 # paswword: $1$4fTgjp6q$JgdO/UQGRxKX2ZfmBIjt40
+
 
 def to64(v,n):
     base64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -12,12 +14,13 @@ def to64(v,n):
         v>>=6
     return ret
 
-def initilization(file):
+def initilization(file, dirname1,t0):
+        os.chdir("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/"+ dirname1)
         f = open(file)
-        password = f.readline()
         count = 1
 
-        while password:
+        for password in f:
+            password = password.strip()
             pass_bytes = bytes(password, 'utf-8')
 
             salt = '4fTgjp6q'
@@ -74,24 +77,28 @@ def initilization(file):
         #daaaad
             if final_hex == 'JgdO/UQGRxKX2ZfmBIjt40':
                 print('{}: MATCH FOUND'.format(password))
-                return
-
-            print("{}. {}: No Match".format(count,password))
-            password = f.readline()
-            count += 1
+                print(count)
+                print(time.time()-t0)
+            else:
+                count += 1
+ 
 
 #initilization("File A1.txt")   
+def filelinker(dirname,t0):
+    for textfile in os.listdir("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/"+ dirname):
+        initilization(textfile, dirname,t0)
+        os.remove("c:/Users/artur/OneDrive/Documents/GitHub/CS165-project1/" +dirname+"/"+textfile)
 
 if __name__ == '__main__':
     t0 = time.time()
 
 
-    firstprocess = multiprocessing.Process(target= initilization, args=('File B1.txt', ))
-    secondprocess = multiprocessing.Process(target= initilization, args=('File C1.txt', ))
-    thirdprocess = multiprocessing.Process(target= initilization, args=('File D1.txt', ))
-    fourthprocess = multiprocessing.Process(target= initilization, args=('File E1.txt', ))
-    fifthprocess = multiprocessing.Process(target= initilization, args=('File F1.txt', ))
-    sixthprocess = multiprocessing.Process(target= initilization, args=('File G1.txt', ))
+    firstprocess = multiprocessing.Process(target= filelinker, args=("process1",t0,))
+    secondprocess = multiprocessing.Process(target=filelinker, args=("process2",t0,))
+    thirdprocess = multiprocessing.Process(target= filelinker, args=("process3",t0,))
+    fourthprocess = multiprocessing.Process(target= filelinker, args=("process4",t0,))
+    fifthprocess = multiprocessing.Process(target= filelinker, args=("process5",t0,))
+    sixthprocess = multiprocessing.Process(target= filelinker, args=("process6",t0,))
 
     firstprocess.start()
     secondprocess.start()
